@@ -6,7 +6,6 @@ cd Python-3.13.7
 ./configure --prefix=/usr          \
             --enable-shared        \
             --with-system-expat    \
-            --enable-optimizations \
             --without-static-libpython \
             --with-ensurepip=install
 
@@ -21,10 +20,12 @@ EOF
 
 install -v -dm755 /usr/share/doc/python-3.13.7/html
 
-tar --strip-components=1  \
-    --no-same-owner       \
-    --no-same-permissions \
-    -C /usr/share/doc/python-3.13.7/html \
-    -xvf ../python-3.13.7-docs-html.tar.bz2
+if [ -f ../python-3.13.7-docs-html.tar.bz2 ]; then
+  tar --strip-components=1  \
+      --no-same-owner       \
+      --no-same-permissions \
+      -C /usr/share/doc/python-3.13.7/html \
+      -xvf ../python-3.13.7-docs-html.tar.bz2
+fi
 
 cd /sources

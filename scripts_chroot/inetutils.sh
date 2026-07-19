@@ -13,8 +13,11 @@ sed -i 's/def HAVE_TERMCAP_TGETENT/ 1/' telnet/telnet.c
             --disable-rexec      \
             --disable-rlogin     \
             --disable-rsh        \
-            --disable-servers
+            --disable-servers    \
+            --disable-ifconfig
 make
 make install
-mv -v /usr/{,s}bin/ifconfig
+if [ -f /usr/bin/ifconfig ]; then
+  mv -v /usr/{,s}bin/ifconfig
+fi
 cd /sources
