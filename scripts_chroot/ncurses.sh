@@ -1,4 +1,5 @@
 set -e
+rm -rf /usr/share/terminfo /usr/lib/terminfo
 cd /sources
 tar xf ncurses-6.5-20250809.tgz
 cd ncurses-6.5-20250809
