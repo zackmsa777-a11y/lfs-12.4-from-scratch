@@ -8,8 +8,8 @@ cd mpfr-4.2.2
             --enable-thread-safe \
             --docdir=/usr/share/doc/mpfr-4.2.2
 make
-make html
+command -v makeinfo >/dev/null 2>&1 && make html || true
 make install
-make install-html
+command -v makeinfo >/dev/null 2>&1 && make install-html || true
 
 cd /sources

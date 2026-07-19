@@ -6,10 +6,12 @@ cd sed-4.9
 ./configure --prefix=/usr
 
 make
-make html
+command -v makeinfo >/dev/null 2>&1 && make html || true
 
 make install
-install -d -m755           /usr/share/doc/sed-4.9
-install -m644 doc/sed.html /usr/share/doc/sed-4.9
+if [ -f doc/sed.html ]; then
+  install -d -m755           /usr/share/doc/sed-4.9
+  install -m644 doc/sed.html /usr/share/doc/sed-4.9
+fi
 
 cd /sources
