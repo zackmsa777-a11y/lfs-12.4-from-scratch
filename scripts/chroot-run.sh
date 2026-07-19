@@ -16,13 +16,33 @@
 #
 # Since real mount() is still blocked, /dev is populated with manually
 # mknod'd device nodes (null, zero, random, urandom, tty, console) plus
-# symlinks for fd/stdin/stdout/stderr -> /proc/self/fd, done ONCE by
-# 07-chroot-prep.sh (or manually). /proc and /sys are NOT mounted (no
-# procfs/sysfs available) — most Chapter 8 package builds don't hard-depend
-# on them when test suites are skipped (which we always do). If a
-# specific package's build/configure hard-requires /proc, handle it
-# as a special case in that package's script.
+# symlinks for fd/stdin/stdout/stderr -> /proc/self/fd. /proc and /sys are
+# NOT mounted (no procfs/sysfs available) — most Chapter 8 package builds
+# don't hard-depend on them when test suites are skipped (which we always do).
+#
+# SELF-HEALING: the sandbox periodically reverts filesystem state between
+# sessions, which flattens mknod'd device nodes back into empty regular
+# files. This script re-creates them on EVERY invocation (cheap, idempotent,
+# no-op if already correct) so the build never silently breaks on that.
 LFS=/app/lfs_build
+
+heal_dev() {
+  local dir="$LFS/dev"
+  mkdir -p "$dir"
+  [ -c "$dir/console" ] || { rm -f "$dir/console"; mknod -m 622 "$dir/console" c 5 1; }
+  [ -c "$dir/null" ]    || { rm -f "$dir/null";    mknod -m 666 "$dir/null" c 1 3; }
+  [ -c "$dir/zero" ]    || { rm -f "$dir/zero";    mknod -m 666 "$dir/zero" c 1 5; }
+  [ -c "$dir/random" ]  || { rm -f "$dir/random";  mknod -m 666 "$dir/random" c 1 8; }
+  [ -c "$dir/urandom" ] || { rm -f "$dir/urandom"; mknod -m 666 "$dir/urandom" c 1 9; }
+  [ -c "$dir/tty" ]     || { rm -f "$dir/tty";     mknod -m 666 "$dir/tty" c 5 0; }
+  [ -L "$dir/fd" ]      || { rm -f "$dir/fd";      ln -s /proc/self/fd "$dir/fd"; }
+  [ -L "$dir/stdin" ]   || { rm -f "$dir/stdin";   ln -s /proc/self/fd/0 "$dir/stdin"; }
+  [ -L "$dir/stdout" ]  || { rm -f "$dir/stdout";  ln -s /proc/self/fd/1 "$dir/stdout"; }
+  [ -L "$dir/stderr" ]  || { rm -f "$dir/stderr";  ln -s /proc/self/fd/2 "$dir/stderr"; }
+  [ -L "$LFS/lib64" ]   || { rm -rf "$LFS/lib64";  ln -s lib "$LFS/lib64"; }
+}
+heal_dev
+
 SCRIPT="$1"
 chroot "$LFS" /usr/bin/env -i \
   HOME=/root \
