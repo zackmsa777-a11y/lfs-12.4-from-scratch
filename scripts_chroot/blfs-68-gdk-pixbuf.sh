@@ -9,8 +9,8 @@ meson setup .. \
   --buildtype=release \
   -D others=enabled \
   -D man=false \
-  -D tests=false \
   --wrap-mode=nofallback
+export LD_LIBRARY_PATH="$PWD/gdk-pixbuf:$LD_LIBRARY_PATH"
 ninja -j17
 ninja install
 cd /sources
