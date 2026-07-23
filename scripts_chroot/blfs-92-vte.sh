@@ -11,7 +11,7 @@ cp -r /tmp/fast_float-6.1.6/* subprojects/fast_float/
 cp subprojects/packagefiles/fast_float/meson.build subprojects/fast_float/meson.build
 rm -rf /tmp/fast_float-6.1.6
 mkdir build && cd build
-meson setup --prefix=/usr --buildtype=release -D _systemd=false -D gnutls=false -D vapi=false -D gtk4=false -D docs=false -D icu=false ..
+meson setup --prefix=/usr --buildtype=release -D _systemd=false -D gnutls=false -D vapi=false -D gtk4=false -D docs=false -D icu=false -D gir=false ..
 ninja -j17
 ninja install
 rm -fv /etc/profile.d/vte.* || true
