@@ -9,6 +9,7 @@ meson setup .. \
   --buildtype=release \
   -D others=enabled \
   -D man=false \
+  -D tests=false \
   --wrap-mode=nofallback
 ninja -j17
 ninja install
