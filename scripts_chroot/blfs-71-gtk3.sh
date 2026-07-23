@@ -9,6 +9,7 @@ meson setup .. \
   --buildtype=release \
   -D man=false \
   -D wayland_backend=false \
+  -D introspection=false \
   -D broadway_backend=true
 export LD_LIBRARY_PATH="$PWD/gdk:$PWD/gtk:$LD_LIBRARY_PATH"
 ninja -j17
