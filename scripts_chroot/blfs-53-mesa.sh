@@ -17,8 +17,7 @@ meson setup .. \
   -D llvm=disabled \
   -D glx=dri \
   -D gles1=disabled \
-  -D gles2=disabled \
-  -D osmesa=true
+  -D gles2=disabled
 ninja -j17
 ninja install
 cd /sources
