@@ -1,7 +1,7 @@
 set -e
 cd /sources
 rm -rf vte-0.80.3
-tar xf vte-0.80.3.tar.gz
+tar xf vte-0.80.3.tar.xz
 cd vte-0.80.3
 # fast_float subproject needs git to auto-fetch; pre-populate it manually instead
 rm -rf subprojects/fast_float
