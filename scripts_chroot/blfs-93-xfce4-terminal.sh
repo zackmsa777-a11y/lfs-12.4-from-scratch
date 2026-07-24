@@ -8,7 +8,7 @@ sed -e '570i #ifdef HAVE_GTK_LAYER_SHELL' \
     -e '574a #endif' \
     -i terminal/terminal-window-dropdown.c || true
 mkdir build && cd build
-meson setup .. --prefix=/usr --buildtype=release
+meson setup .. --prefix=/usr --buildtype=release -D doc=false
 ninja -j17
 ninja install
 cd /sources
